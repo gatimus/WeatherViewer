@@ -28,7 +28,7 @@ public class DateDeserializer implements JsonDeserializer<Date> {
                 }
             }
         } else if(jsonPrimitive.isNumber()){
-            date = new Date(jsonPrimitive.getAsLong());
+            date = new Date(jsonPrimitive.getAsLong()*1_000);
         }
         return date;
     }

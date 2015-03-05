@@ -14,7 +14,7 @@ public class CurrentWeather {
     public Snow snow;
     public Clouds clouds;
     public Date dt;
-    public long id;
+    public int id;
     public String name;
     public int cod;
     public Date dt_txt;

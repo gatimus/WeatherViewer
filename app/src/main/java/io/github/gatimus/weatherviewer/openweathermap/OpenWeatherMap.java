@@ -1,8 +1,12 @@
 package io.github.gatimus.weatherviewer.openweathermap;
 
+import android.content.Context;
+import android.widget.ImageView;
+
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.squareup.picasso.Picasso;
 
 import java.util.Date;
 
@@ -22,25 +26,26 @@ public class OpenWeatherMap {
     public static final String ACCURACY_LOW = "like";
 
     public static interface OpenWeatherMapInterface {
+
         @GET("/data/2.5/weather")
-        void getWeather(@Query("lat") float lat, @Query("lon") float lon, @Query("units") String units, Callback<CurrentWeather> cb);
+        void getWeather(@Query("lat") double lat, @Query("lon") double lon, @Query("units") String units, Callback<CurrentWeather> cb);
         @GET("/data/2.5/weather")
         void getWeather(@Query("q") String city, @Query("units") String units, Callback<CurrentWeather> cb);
         @GET("/data/2.5/weather")
         void getWeather(@Query("id") int id, @Query("units") String units, Callback<CurrentWeather> cb);
 
         @GET("/data/2.5/forecast")
-        void getForecast(@Query("lat") float lat, @Query("lon") float lon, @Query("units") String units, Callback<CurrentWeather> cb);
+        void getForecast(@Query("lat") float lat, @Query("lon") float lon, @Query("units") String units, Callback<Forecast> cb);
         @GET("/data/2.5/forecast")
-        void getForecast(@Query("q") String city, @Query("units") String units, Callback<CurrentWeather> cb);
+        void getForecast(@Query("q") String city, @Query("units") String units, Callback<Forecast> cb);
         @GET("/data/2.5/forecast")
-        void getForecast(@Query("id") int id, @Query("units") String units, Callback<CurrentWeather> cb);
+        void getForecast(@Query("id") int id, @Query("units") String units, Callback<Forecast> cb);
 
         @GET("/data/2.5/forecast/daily")
         void getDailyForecast();
 
         @GET("data/2.5/find")
-        void find();
+        void find(@Query("q") String city, @Query("type") String accuracy, @Query("units") String units, Callback<Forecast> cb);
     }
 
 
@@ -69,6 +74,14 @@ public class OpenWeatherMap {
         }
 
         return restAdapter.create(OpenWeatherMapInterface.class);
+    }
+
+    public static void loadIcon(Context context, String icon, ImageView imageView){
+        Picasso picasso = Picasso.with(context);
+        if(BuildConfig.DEBUG){
+            picasso.setIndicatorsEnabled(true);
+        }
+        picasso.load("http://openweathermap.org/img/w/" + icon + ".png").into(imageView);
     }
 
 }
